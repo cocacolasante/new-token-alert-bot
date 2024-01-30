@@ -21,7 +21,7 @@ contract Token is ERC20 {
     }
 
     function mintTokens(uint numOfTokens) public payable {
-        require(msg.value >= (_tokenPrice * numOfTokens), "CREDITS: invalid ether amount sent");
+       
 
         _mint(msg.sender, numOfTokens);
 

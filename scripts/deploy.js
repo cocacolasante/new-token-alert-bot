@@ -5,9 +5,11 @@
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
 const hre = require("hardhat");
+// const {provider } = require("../helpers/initializer")
 
 async function main() {
- 
+
+  // const signer = new hre.ethers.Wallet(process.env.SIGNER, provider)
 
   const token0 = await hre.ethers.deployContract("Token", ["Credit Token", "CT", hre.ethers.parseEther("1")]);
 
@@ -23,6 +25,17 @@ async function main() {
   console.log(
     `Token1  deployed to ${token1.target}`
   );
+
+  // console.log("Swapping eth for token1")
+  
+  // const tx = await token1.connect(signer).mintTokens(1, {value: hre.ethers.parseEther("1")})
+  // const res = await tx.wait()
+  // if(res.status == 1 ){
+  //   console.log("success")
+  // }else {
+  //   console.log("fail")
+
+  // }
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -35,6 +35,8 @@ async function main() {
     const poolAddress = await factory.connect(signer).getPool(TOKEN0_ADDRESS, TOKEN1_ADDRESS, 500)
     console.log(poolAddress)
 
+    
+
 
 }
 
