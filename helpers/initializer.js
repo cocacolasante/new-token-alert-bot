@@ -13,20 +13,19 @@ let provider
 if (config.PROJECT_SETTINGS.isLocal) {
     provider = new hre.ethers.WebSocketProvider(`ws://127.0.0.1:8545/`)
 } else {
-    provider = new hre.ethers.WebSocketProvider(`wss://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`)
+    provider = new hre.ethers.WebSocketProvider(process.env.ARBITRUM_WS)
 }
 
-const Factory = new hre.ethers.Contract(config.UNISWAP.V3_FACTORY, factoryAbi.abi, provider)
-
-const PositionManager = new hre.ethers.Contract(config.UNISWAP.NonfungiblePositionManager, nonfugAbi.abi, provider)
-
-const Router = new hre.ethers.Contract(config.UNISWAP.ROUTER, routerabi.abi, provider)
+const pFactory = new hre.ethers.Contract(config.ARBITRUM.PANCAKESWAP.FACTORY_ADDRESS, factoryAbi.abi, provider)
+const pPositionManager = new hre.ethers.Contract(config.ARBITRUM.PANCAKESWAP.NonfungiblePositionManager, nonfugAbi.abi, provider)
+const sFactory = new hre.ethers.Contract(config.ARBITRUM.SUSHISWAP.FACTORY_ADDRESS, factoryAbi.abi, provider)
+const sPositionManager = new hre.ethers.Contract(config.ARBITRUM.SUSHISWAP.NonfungiblePositionManager, nonfugAbi.abi, provider)
 
 
 module.exports = {
     provider,
-    Factory,
-    PositionManager,
-    Router
-    
+    pFactory,
+    pPositionManager,
+    sFactory,
+    sPositionManager,
 }
