@@ -1,20 +1,22 @@
-
+require("dotenv").config()
+const nodemailer = require('nodemailer');
 
 // LOWER THE TRUST SCORE, THE BETTER THE CONTRACT
-const validateContract = (contract) =>{
+const validateContract = async (contract) =>{
     let trustScore = 0
     let isValid = false
     for (const key in contract) {
         if (contract.hasOwnProperty(key)) {
             const token = contract[key];
             console.log(`Processing token at key: ${key}`);
+            console.log(`Token name ${token.token_name}`)
             
             // Access properties like token.lp_total_supply, token.lp_holders, etc.
-            console.log(`Total LP Supply: ${token.lp_total_supply}`);
-            console.log(`LP Holders: ${token.lp_holders.length}`);
-            if(token.lp_holders.length < 2){
-                trustScore++
-            }
+            // console.log(`Total LP Supply: ${token.lp_total_supply}`);
+            
+            // if(token.lp_holders.length < 2){
+            //     trustScore++
+            // }
             console.log(`Self-Destruct: ${token.selfdestruct}`);
             if(token.selfdestruct > 0){
                 trustScore+= 10
@@ -127,7 +129,37 @@ const validateContract = (contract) =>{
 }
 
 
+const sendNotification = async (pairAddress, token0, token1, exchange) =>{
+    try {
+        // Create a transporter object using the default SMTP transport
+        let transporter = nodemailer.createTransport({
+            service: 'gmail', // Use Gmail as the email service
+            auth: {
+                user: process.env.EMAIL_USERNAME, // Your email address
+                pass: process.env.EMAIL_PASSWORD, // Your email password
+            },
+        });
+        const body = `New Token Pair added to exchange: ${exchange}\n
+            Token 0 address ${token0}\n
+            Token 1 address ${token1}\n
+            Pair address ${pairAddress}\n
+        `
+        // Send mail with defined transport object
+        let info = await transporter.sendMail({
+            from: '"Token Alert" <cocacolasante215@gmail.com>', // Sender address
+            to: "colasante16@gmail.com", // List of receivers
+            subject: "New Token Pair Added", // Subject line
+            text: body, // Plain text body
+        });
+
+        console.log("Message sent: %s", info.messageId);
+    } catch (error) {
+        console.error("Failed to send email", error);
+    }
+}
+
 
 module.exports = {
-    validateContract
+    validateContract,
+    sendNotification
 }
