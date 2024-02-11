@@ -16,10 +16,21 @@ if (config.PROJECT_SETTINGS.isLocal) {
     provider = new hre.ethers.WebSocketProvider(process.env.ARBITRUM_WS)
 }
 
+let baseProvider
+if (config.PROJECT_SETTINGS.isLocal) {
+    baseProvider = new hre.ethers.WebSocketProvider(`ws://127.0.0.1:8545/`)
+} else {
+    baseProvider = new hre.ethers.WebSocketProvider(process.env.BASE_WS)
+}
+
+
 const pFactory = new hre.ethers.Contract(config.ARBITRUM.PANCAKESWAP.FACTORY_ADDRESS, factoryAbi.abi, provider)
 const pPositionManager = new hre.ethers.Contract(config.ARBITRUM.PANCAKESWAP.NonfungiblePositionManager, nonfugAbi.abi, provider)
 const sFactory = new hre.ethers.Contract(config.ARBITRUM.SUSHISWAP.FACTORY_ADDRESS, factoryAbi.abi, provider)
 const sPositionManager = new hre.ethers.Contract(config.ARBITRUM.SUSHISWAP.NonfungiblePositionManager, nonfugAbi.abi, provider)
+
+const basePanFactory = new hre.ethers.Contract(config.BASE.PANCAKESWAP.FACTORY_ADDRESS, factoryAbi.abi, baseProvider)
+const baseSushiFactory = new hre.ethers.Contract(config.BASE.SUSHISWAP.FACTORY_ADDRESS, factoryAbi.abi, baseProvider)
 
 
 module.exports = {
@@ -28,4 +39,6 @@ module.exports = {
     pPositionManager,
     sFactory,
     sPositionManager,
+    basePanFactory,
+    baseSushiFactory
 }

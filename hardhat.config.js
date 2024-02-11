@@ -9,7 +9,7 @@ module.exports = {
   networks: {
     hardhat: {
       forking: {
-        url:process.env.ARBITRUM_URL,
+        url:process.env.BASE_URL,
       }
     },
     arbitrum:{

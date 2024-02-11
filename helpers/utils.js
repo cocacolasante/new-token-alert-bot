@@ -122,6 +122,11 @@ const validateContract = async (contract) =>{
       }
       isValid = true
 
+    //   return {
+    //     isValid: true,
+    //     trustScore: 0
+    //   }
+
       return {
         isValid: isValid,
         trustScore: trustScore
@@ -129,7 +134,7 @@ const validateContract = async (contract) =>{
 }
 
 
-const sendNotification = async (pairAddress, token0, token1, exchange) =>{
+const sendNotification = async (pairAddress, token0, token1, exchange, chain) =>{
     try {
         // Create a transporter object using the default SMTP transport
         let transporter = nodemailer.createTransport({
@@ -139,7 +144,7 @@ const sendNotification = async (pairAddress, token0, token1, exchange) =>{
                 pass: process.env.EMAIL_PASSWORD, // Your email password
             },
         });
-        const body = `New Token Pair added to exchange: ${exchange}\n
+        const body = `New Token Pair added to exchange: ${exchange} on chain: ${chain}\n
             Token 0 address ${token0}\n
             Token 1 address ${token1}\n
             Pair address ${pairAddress}\n
