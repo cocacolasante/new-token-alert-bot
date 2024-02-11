@@ -23,7 +23,7 @@ const main = async () =>{
         console.log("-------------------------------------")
 
         // let addresses = [token0, token1]
-        let addresses = [WETH, WETH]
+        let addresses = [token0, token1]
 
         let res = await GoPlus.tokenSecurity(chain, addresses, 30);
         
@@ -56,7 +56,7 @@ const main = async () =>{
         console.log("-------------------------------------")
 
         // let addresses = [token0, token1]
-        let addresses = [WETH, WETH]
+        let addresses = [token0, token1]
 
         let res = await GoPlus.tokenSecurity(chain, addresses, 30);
         
@@ -88,8 +88,8 @@ const main = async () =>{
         console.log(`Pool Tick Spacing ${tickSpacing}`)
         console.log("-------------------------------------")
 
-        // let addresses = [token0, token1]
-        let addresses = [WETHBASE, WETHBASE]
+        let addresses = [token0, token1]
+        // let addresses = [WETHBASE, WETHBASE]
 
         let res = await GoPlus.tokenSecurity(8453, addresses, 30);
         
@@ -121,8 +121,8 @@ const main = async () =>{
         console.log(`Pool Tick Spacing ${tickSpacing}`)
         console.log("-------------------------------------")
 
-        // let addresses = [token0, token1]
-        let addresses = [WETHBASE, WETHBASE]
+        let addresses = [token0, token1]
+        // let addresses = [WETHBASE, WETHBASE]
 
         let res = await GoPlus.tokenSecurity(8453, addresses, 30);
         
