@@ -1,5 +1,6 @@
 require("dotenv").config()
 const nodemailer = require('nodemailer');
+const config = require("../config.json")
 
 // LOWER THE TRUST SCORE, THE BETTER THE CONTRACT
 const validateContract = async (contract) =>{
@@ -10,6 +11,7 @@ const validateContract = async (contract) =>{
             const token = contract[key];
             console.log(`Processing token at key: ${key}`);
             console.log(`Token name ${token.token_name}`)
+            console.log(`token_symbol: ${token.token_symbol}`);
             
             // Access properties like token.lp_total_supply, token.lp_holders, etc.
             // console.log(`Total LP Supply: ${token.lp_total_supply}`);
@@ -30,10 +32,6 @@ const validateContract = async (contract) =>{
             console.log(`is_honeypot: ${token.is_honeypot}`);
             if(token.is_honeypot > 0){
                 trustScore+= 10
-                return {
-                    isValid: false,
-                    trustScore: trustScore
-                }
             } 
             console.log(`transfer_pausable: ${token.transfer_pausable}`);
             if(token.transfer_pausable > 0 ){
@@ -71,7 +69,7 @@ const validateContract = async (contract) =>{
             if(token.buy_tax > 0 ) {
                 trustScore++
             }
-            console.log(`buy_tax: ${token.sell_tax}`);
+            console.log(`sell_tax: ${token.sell_tax}`);
             if(token.sell_tax > 0 ) {
                 trustScore++
             }
@@ -97,35 +95,23 @@ const validateContract = async (contract) =>{
             if(token.is_mintable > 0 ) {
                 trustScore++
             }
-            console.log(`token_symbol: ${token.token_symbol}`);
+            
             console.log(`trust_list: ${token.trust_list}`);
-            if(token.trust_list > 0 ){
-                isValid = true
+            if(token.trust_list != 0 ){
                 trustScore++
-                return {
-                    isValid: true,
-                    trustScore: trustScore
-                }
             }
             
-          // If you want to iterate over lp_holders or other arrays
-      
-          // Continue for other properties as needed
+            // ADD OTHER CHECKS OR API CALLS HERE TO TWEAK AND MODIFY ALGO BASED ON REQUIREMENTS
+
+
+
+
         }
       }
 
-      if(trustScore > 5 ){
-        return{
-            isValid: false,
-            trustScore: trustScore
-        }
+      if(trustScore <= config.PROJECT_SETTINGS.TRUST_SCORE_LIMIT ){   
+        isValid =true
       }
-      isValid = true
-
-    //   return {
-    //     isValid: true,
-    //     trustScore: 0
-    //   }
 
       return {
         isValid: isValid,
@@ -144,6 +130,10 @@ const sendNotification = async (pairAddress, token0, token1, exchange, chain) =>
                 pass: process.env.EMAIL_PASSWORD, // Your email password
             },
         });
+
+        
+        // fetch and add additional information about tokens here
+
         const body = `New Token Pair added to exchange: ${exchange} on chain: ${chain}\n
             Token 0 address ${token0}\n
             Token 1 address ${token1}\n
